@@ -1,0 +1,27 @@
+version: "3.9"
+
+services:
+  django:
+    restart: always
+    container_name: "django_test"
+    build:
+      context: ./../../../backend
+      dockerfile: Dockerfile
+    env_file:
+      - ./../../../environment/dev.env
+    volumes:
+      - "./../../../backend:/code"
+    ports:
+      - "8000:8000"
+    depends_on:
+      - postgresql
+
+  postgresql:
+    container_name: "postgresql_test"
+    restart: on-failure
+    image: postgres:13.4-alpine
+    env_file:
+      - ./../../../environment/dev.env
+    ports:
+      - "5432:5432"
+  
